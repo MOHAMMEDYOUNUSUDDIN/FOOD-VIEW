@@ -8,10 +8,7 @@ dns.setServers([
 
 async function connectDB() {
     try {
-        await mongoose.connect(
-            "mongodb+srv://younus:younus0786@backend.gqi03kn.mongodb.net/food&view"
-        );
-
+        await mongoose.connect(process.env.MONGO_URL);
         console.log("MongoDB Connected");
     } catch (err) {
         console.log("Connection Error:", err.message);
