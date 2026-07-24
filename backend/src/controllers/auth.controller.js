@@ -113,17 +113,17 @@ async function registerFoodParter(req,res){
 async function loginFoodPartner(req,res) {
     const {email,password}=req.body;
 
-    const user = await foodPartnerModel.findOne({
+    const foodPartner = await foodPartnerModel.findOne({
         email
     })
 
-    if(!user){
+    if(!foodPartner){
         return res.status(400).json({
             message:"Invalid email or password"
         })
     }
    
-    const isPassword = await bcryptjs.compare(password,user.password);
+    const isPassword = await bcryptjs.compare(password,foodPartner.password);
     
      if(!isPassword){
         return res.status(400).json({
@@ -157,5 +157,4 @@ module.exports = {
     registerFoodParter,
     loginFoodPartner,
     logoutFoodPartner
-
 }
