@@ -1,4 +1,5 @@
 const foodPartnerModel = require("../models/foodPartner.model");
+const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 async function authFoodPartnerModel(req, res, next) {
@@ -20,10 +21,8 @@ async function authFoodPartnerModel(req, res, next) {
                 message: "Food Partner not found"
             });
         }
-        console
-        
-        req.foodPartner = foodPartner;
 
+        req.foodPartner = foodPartner;
         next();
     } catch (err) {
         return res.status(401).json({
@@ -32,24 +31,27 @@ async function authFoodPartnerModel(req, res, next) {
     }
 }
 
-async function  authUserMiddleware(req,res,next){
-    const token =req.cookies.token;
+async function authUserMiddleware(req, res, next) {
+    const token = req.cookies.token;
 
-    if(!token){
+    if (!token) {
         return res.status(401).json({
-            message:"Please login First"
+            message: "Please login First"
         })
     }
-    try{
+
+    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await foodPartnerModel.findById(decoded.id);
+        const user = await userModel.findById(decoded.id);
 
-        req.user=user
-        
-        next()
-    }
-    catch (err) {
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        req.user = user;
+        next();
+    } catch (err) {
         return res.status(401).json({
             message: "Invalid or Expired Token"
         });

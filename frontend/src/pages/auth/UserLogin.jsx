@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import apiClient from '../../api/client';
 import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
@@ -13,12 +13,10 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/user/login", {
+    await apiClient.post('/api/auth/user/login', {
       email,
       password
-    }, { withCredentials: true });
-
-    console.log(response.data);
+    });
 
     navigate("/"); // Redirect to home after login
 

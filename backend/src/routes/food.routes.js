@@ -5,19 +5,30 @@ const router = express.Router();
 const multer = require('multer');
 
 const upload = multer({
-    storage:multer.memoryStorage(),
+    storage: multer.memoryStorage(),
 })
 
-/* POST "/api/auth/food {protected}*/
+/* POST "/api/auth/food {protected}"*/
 router.post('/',
     authMiddleware.authFoodPartnerModel,
     upload.single("video"),
     foodController.createFood)
 
-/* GET "/api/auth/food {protected}*/
+router.post('/like',
+    authMiddleware.authUserMiddleware,
+    foodController.toggleLike)
+
+router.post('/save',
+    authMiddleware.authUserMiddleware,
+    foodController.toggleSave)
+
+/* GET "/api/auth/food {protected}"*/
 router.get("/",
     authMiddleware.authUserMiddleware,
     foodController.getFoodItems)
 
+router.get('/:id',
+    authMiddleware.authUserMiddleware,
+    foodController.getFoodPartnerProfile)
 
 module.exports = router;
