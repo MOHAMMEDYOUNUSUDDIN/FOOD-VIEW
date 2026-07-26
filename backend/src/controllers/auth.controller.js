@@ -22,7 +22,10 @@ async function registerUser(req,res){
     const user = await userModel.create({
         fullName,
         email,
-        password:hashedPassword
+        password:hashedPassword,
+        phone,
+        address,
+        contactName
     })
     const token = jwt.sign({
         id:user._id,
@@ -33,7 +36,7 @@ async function registerUser(req,res){
         user:{
            _id:user._id,
            email:user.email,
-           fullName:user.fullName
+           fullName:user.fullName,
         }
     })
 }
@@ -78,7 +81,7 @@ function loginoutUser(req,res){
     });
 }
 async function registerFoodParter(req,res){
-    const {fullName,email,password}=req.body;
+    const {fullName,email,password,phone,address,contactName}=req.body;
 
     const isUserAlreadyExists = await foodPartnerModel.findOne({
         email
@@ -94,7 +97,10 @@ async function registerFoodParter(req,res){
     const foodPartner = await foodPartnerModel.create({
         fullName,
         email,
-        password:hashedPassword
+        password:hashedPassword,
+        phone,
+        address,
+        contactName
     })
     const token = jwt.sign({
         id:foodPartner._id,
@@ -102,10 +108,13 @@ async function registerFoodParter(req,res){
     res.cookie("token",token)
     res.status(201).json({
         message:"User registered successfully",
-        user:{
-           _id:foodPartner._id,
-           email:foodPartner.email,
-           fullName:foodPartner.fullName
+         foodPartner:{
+             _id: foodPartner._id,
+            email: foodPartner.email,
+            name: foodPartner.name,
+            address: foodPartner.address,
+            contactName: foodPartner.contactName,
+            phone: foodPartner.phone
         }
     })
 }
@@ -137,7 +146,7 @@ async function loginFoodPartner(req,res) {
     res.cookie("token",token)
     res.status(201).json({
         message:"User Loginned successfully",
-        user:{
+         foodPartner:{
            _id:foodPartner._id,
            email:foodPartner.email,
            fullName:foodPartner.fullName
