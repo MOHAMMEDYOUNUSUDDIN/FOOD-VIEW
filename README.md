@@ -1,4 +1,4 @@
-🍽️ FOOD VIEW
+🍽️ FOOD VIEW 
 
 A Full-Stack Food Sharing & Discovery Platform
 
